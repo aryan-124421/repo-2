@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Internship Project</title>
+  <link rel="stylesheet" href="port.css">
+  
+</head>
+<body>
+
+  <nav>
+    <h2>Internship Web Project</h2>
+    <div>
+      <a href="#">Home</a>
+      <a href="#">Contact</a>
+      <a href="#">Gallery</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Contact Form -->
+    <div class="card">
+      <h3>Contact Form</h3>
+      <form id="contactForm">
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="tel" id="phone" placeholder="Phone Number" required />
+        <div>
+          <label><input type="radio" name="gender" value="Male" required /> Male</label>
+          <label><input type="radio" name="gender" value="Female" /> Female</label>
+        </div>
+        <input type="password" id="password" placeholder="Create Password" required />
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+        <button type="submit">Submit</button>
+        <p id="formMsg"></p>
+      </form>
+    </div>
+
+    <!-- To-Do List -->
+    <div class="card todo">
+      <h3>To-Do List</h3>
+      <input type="text" id="taskInput" placeholder="Add a task" />
+      <button onclick="addTask()">Add Task</button>
+      <ul id="taskList"></ul>
+    </div>
+
+    <!-- Image Gallery -->
+    <div class="card gallery">
+      <h3>Image Gallery</h3>
+      <input type="text" id="imgUrl" placeholder="Paste image URL" />
+      <button onclick="addImage()">Add Image</button>
+      <div class="images" id="imageGallery"></div>
+    </div>
+  </div>
+
+  <script>
+    // Form Validation
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const msg = document.getElementById('formMsg');
+
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      const phonePattern = /^\d{10}$/;
+
+      if (!name || !email || !phone || !password || !confirmPassword) {
+        msg.style.color = 'red';
+        msg.textContent = 'Please fill in all fields.';
+      } else if (!emailPattern.test(email)) {
+        msg.style.color = 'red';
+        msg.textContent = 'Invalid email address.';
+      } else if (!phonePattern.test(phone)) {
+        msg.style.color = 'red';
+        msg.textContent = 'Phone number should be 10 digits.';
+      } else if (password !== confirmPassword) {
+        msg.style.color = 'red';
+        msg.textContent = 'Passwords do not match.';
+      } else {
+        msg.style.color = 'green';
+        msg.textContent = 'Form submitted successfully!';
+        document.getElementById('contactForm').reset();
+      }
+    });
+
+    // To-do List
+    function addTask() {
+      const taskInput = document.getElementById('taskInput');
+      const taskText = taskInput.value.trim();
+      if (!taskText) return;
+      const li = document.createElement('li');
+      li.innerHTML = `${taskText} <button onclick="this.parentElement.remove()">❌</button>`;
+      document.getElementById('taskList').appendChild(li);
+      taskInput.value = '';
+    }
+
+    // Image Gallery
+    function addImage() {
+      const imgUrl = document.getElementById('imgUrl').value.trim();
+      if (!imgUrl) return;
+      const box = document.createElement('div');
+      box.className = 'img-box';
+      box.innerHTML = `<img src="${imgUrl}" alt="image" /> <button onclick="this.parentElement.remove()">❌</button>`;
+      document.getElementById('imageGallery').appendChild(box);
+      document.getElementById('imgUrl').value = '';
+    }
+  </script>
+
+</body>
+</html>
